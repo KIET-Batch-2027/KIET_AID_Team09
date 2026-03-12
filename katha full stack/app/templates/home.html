@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero center">
+  <h1>
+    {{ t('hero_title_before') }}
+    <span class="highlight">{{ t('hero_title_highlight') }}</span>
+    {{ t('hero_title_after') }}
+  </h1>
+  <p>{{ t('hero_subtitle') }}</p>
+  <div class="actions">
+    <a href="{{ url_for('story.generate') }}" class="btn btn-primary">{{ t('cta_generate') }}</a>
+    {% if not current_user.is_authenticated %}
+      <a href="{{ url_for('auth.signup') }}" class="btn btn-outline">{{ t('cta_signup') }}</a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="stories-block">
+  <h2>{{ t('stories_section') }}</h2>
+  <div class="story-grid">
+    {% for story in recent_stories %}
+      <article class="card">
+        <h3>{{ story.genre }} - {{ story.language|upper }}</h3>
+        <p>{{ story.story_text[:160] }}...</p>
+      </article>
+    {% else %}
+      <article class="card"><p>{{ t('no_stories') }}</p></article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="stats">
+  <div><strong>{{ total_users }}</strong><span>{{ t('stats_users') }}</span></div>
+  <div><strong>{{ total_stories }}</strong><span>{{ t('stats_stories') }}</span></div>
+  <div><strong>3</strong><span>{{ t('stats_languages') }}</span></div>
+</section>
+{% endblock %}

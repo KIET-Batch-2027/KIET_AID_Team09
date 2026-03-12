@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="form-card">
+  <h1>{{ t('login_title') }}</h1>
+  <form method="post" class="grid-form">
+    <label>{{ t('email') }}<input type="email" name="email" required></label>
+    <label>{{ t('password') }}<input type="password" name="password" required></label>
+    <button class="btn btn-primary" type="submit">{{ t('nav_login') }}</button>
+  </form>
+</section>
+{% endblock %}

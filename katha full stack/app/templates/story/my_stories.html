@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="page-card">
+  <h1>{{ t('stories_title') }}</h1>
+  <div class="story-grid">
+    {% for story in stories %}
+      <article class="card">
+        <h3>{{ story.genre }} - {{ story.language|upper }}</h3>
+        <p>{{ story.prompt }}</p>
+        <p>{{ story.story_text[:190] }}...</p>
+        <a class="btn btn-outline" href="{{ url_for('story.view_story', story_id=story.id) }}">{{ t('view_story') }}</a>
+      </article>
+    {% else %}
+      <article class="card"><p>{{ t('no_stories') }}</p></article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

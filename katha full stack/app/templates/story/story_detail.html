@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="story-detail">
+  <div class="page-card">
+    <h1>{{ story.genre }} - {{ story.language|upper }}</h1>
+    <p><strong>{{ t('prompt_label') }}:</strong> {{ story.prompt }}</p>
+    <pre id="storyText" class="story-text">{{ story.story_text }}</pre>
+
+    <div class="actions">
+      <a class="btn btn-outline" href="{{ url_for('story.download_pdf', story_id=story.id) }}">{{ t('download_pdf') }}</a>
+    </div>
+
+    <div class="tts-panel" data-tts-container>
+      <h3>{{ t('tts_label') }}</h3>
+      <div class="tts-row">
+        <label>{{ t('language_label') }}
+          <select id="translateLang">
+            <option value="tulu">Tulu (&#3108;&#3137;&#3123;&#3137;)</option>
+            <option value="awadhi">Awadhi (&#2309;&#2357;&#2343;&#2368;)</option>
+            <option value="en">English (English)</option>
+          </select>
+        </label>
+        <button class="btn btn-outline" id="translateBtn" type="button">{{ t('translate_btn') }}</button>
+      </div>
+      <div class="tts-row">
+        <label>{{ t('voice_label') }}
+          <select id="voiceSelect">
+            <option value="kn-IN">Voice kn-IN</option>
+            <option value="hi-IN">Voice hi-IN</option>
+            <option value="en-IN" selected>Voice en-IN</option>
+          </select>
+        </label>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="playBtn" type="button">{{ t('play') }}</button>
+        <button class="btn btn-outline" id="pauseBtn" type="button">{{ t('pause') }}</button>
+        <button class="btn btn-outline" id="stopBtn" type="button">{{ t('stop') }}</button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.kathaTranslateEndpoint = "{{ url_for('story.translate') }}";
+</script>
+<script src="{{ url_for('static', filename='js/story.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="form-card">
+  <h1>{{ t('signup_title') }}</h1>
+  <form method="post" class="grid-form">
+    <label>{{ t('username') }}<input type="text" name="username" required></label>
+    <label>{{ t('email') }}<input type="email" name="email" required></label>
+    <label>{{ t('password') }}<input type="password" name="password" minlength="6" required></label>
+    <label>{{ t('confirm_password') }}<input type="password" name="confirm_password" minlength="6" required></label>
+    <button class="btn btn-primary" type="submit">{{ t('nav_signup') }}</button>
+  </form>
+</section>
+{% endblock %}

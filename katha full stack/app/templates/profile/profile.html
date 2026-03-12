@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="profile-layout">
+  <div class="page-card">
+    <h1>{{ t('profile_title') }}</h1>
+    <div class="profile-head">
+      <img src="{{ url_for('static', filename=current_user.avatar) }}" alt="avatar" class="profile-avatar">
+      <div>
+        <p><strong>{{ current_user.username }}</strong></p>
+        <p>{{ current_user.email }}</p>
+        <p>{{ t('stories_created') }}: {{ stories|length }}</p>
+      </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="grid-form">
+      <input type="hidden" name="action" value="upload_avatar">
+      <label>{{ t('upload_avatar') }}
+        <input type="file" name="avatar_file" accept="image/*">
+      </label>
+      <button class="btn btn-outline" type="submit">{{ t('upload') }}</button>
+    </form>
+
+    <form method="post" class="avatar-grid">
+      <input type="hidden" name="action" value="select_avatar">
+      {% for avatar in preset_avatars %}
+        <label class="avatar-item">
+          <input type="radio" name="avatar" value="{{ avatar }}" {% if current_user.avatar == avatar %}checked{% endif %}>
+          <img src="{{ url_for('static', filename=avatar) }}" alt="avatar">
+        </label>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">{{ t('save_changes') }}</button>
+    </form>
+
+    <h2>{{ t('settings') }}</h2>
+    <form method="post" class="grid-form">
+      <input type="hidden" name="action" value="change_username">
+      <label>{{ t('change_username') }}
+        <input type="text" name="new_username" required>
+      </label>
+      <button class="btn btn-outline" type="submit">{{ t('save_changes') }}</button>
+    </form>
+
+    <form method="post" class="grid-form">
+      <input type="hidden" name="action" value="change_password">
+      <label>{{ t('current_password') }}<input type="password" name="old_password" required></label>
+      <label>{{ t('change_password') }}<input type="password" name="new_password" minlength="6" required></label>
+      <button class="btn btn-outline" type="submit">{{ t('save_changes') }}</button>
+    </form>
+
+    <form method="post" action="{{ url_for('auth.logout') }}">
+      <button class="btn btn-outline" type="submit">{{ t('logout') }}</button>
+    </form>
+
+    <form method="post" onsubmit="return confirm('Delete your account permanently?')">
+      <input type="hidden" name="action" value="delete_account">
+      <button class="btn btn-outline danger" type="submit">{{ t('delete_account') }}</button>
+    </form>
+  </div>
+
+  <div class="page-card">
+    <h2>{{ t('history') }}</h2>
+    {% for story in stories %}
+      <article class="card">
+        <h3>{{ story.genre }} - {{ story.language|upper }}</h3>
+        <p>{{ story.story_text[:170] }}...</p>
+        <div class="actions">
+          <a class="btn btn-outline" href="{{ url_for('story.view_story', story_id=story.id) }}">{{ t('view_story') }}</a>
+          <form method="post">
+            <input type="hidden" name="action" value="delete_story">
+            <input type="hidden" name="story_id" value="{{ story.id }}">
+            <button class="btn btn-outline" type="submit">{{ t('delete_story') }}</button>
+          </form>
+        </div>
+      </article>
+    {% else %}
+      <p>{{ t('no_stories') }}</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

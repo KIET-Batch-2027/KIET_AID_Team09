@@ -1,0 +1,24 @@
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(80) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
+    avatar VARCHAR(255),
+    preferred_language VARCHAR(10) NOT NULL DEFAULT 'en',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE stories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    prompt TEXT NOT NULL,
+    language VARCHAR(20) NOT NULL,
+    genre VARCHAR(30) NOT NULL,
+    length VARCHAR(20) NOT NULL,
+    story_text TEXT NOT NULL,
+    audio_file_path VARCHAR(255),
+    is_child_safe BOOLEAN NOT NULL DEFAULT 0,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
